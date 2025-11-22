@@ -1,10 +1,29 @@
 import UsersDao from "./dao.js";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
-  const createUser = (req, res) => {};
-  const deleteUser = (req, res) => {};
-  const findAllUsers = (req, res) => {};
-  const findUserById = (req, res) => {};
+  const createUser = (req, res) => {
+    const user = req.body;
+    const newUser = dao.createUser(user);
+    res.json(newUser);
+  };
+  const deleteUser = (req, res) => {
+    const userId = req.params.userId;
+    dao.deleteUser(userId);
+    res.sendStatus(200);
+  };
+  const findAllUsers = (req, res) => {
+    const users = dao.findAllUsers();
+    res.json(users);
+  };
+  const findUserById = (req, res) => {
+    const userId = req.params.userId;
+    const user = dao.findUserById(userId);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  };
   const updateUser = (req, res) => {
     const userId = req.params.userId;
     const userUpdates = req.body;
@@ -20,7 +39,6 @@ export default function UserRoutes(app, db) {
       return;
     }
     const currentUser = dao.createUser(req.body);
-    req.session["currentUser"] = currentUser;
     res.json(currentUser);
   };
   const signin = (req, res) => {
@@ -35,10 +53,12 @@ export default function UserRoutes(app, db) {
   };
   const signout = (req, res) => {
     req.session.destroy();
+    console.log("Signed out");
     res.sendStatus(200);
   };
   const profile = async (req, res) => {
     const currentUser = req.session["currentUser"];
+    console.log("Current user found");
     if (!currentUser) {
       res.sendStatus(401);
       return;
