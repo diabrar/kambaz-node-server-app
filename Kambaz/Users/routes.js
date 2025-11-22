@@ -61,6 +61,7 @@ export default function UserRoutes(app, db) {
     console.log("Current user found");
     if (!currentUser) {
       res.sendStatus(401);
+      console.log("Current not found?");
       return;
     }
     res.json(currentUser);

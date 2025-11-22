@@ -5,7 +5,9 @@ export default function EnrollmentsDao(db) {
   }
   function enrollUserInCourse(userId, courseId) {
     const { enrollments } = db;
-    enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
+    const enrollment = {_id: uuidv4(), user: userId, course: courseId};
+    enrollments.push(enrollment);
+    return enrollment;
   }
   function unenrollUserFromCourse(userId, courseId) {
     const { enrollments } = db;

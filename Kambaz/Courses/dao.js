@@ -3,6 +3,7 @@ export default function CoursesDao(db) {
   function findAllCourses() {
     return db.courses;
   }
+
   function findCoursesForEnrolledUser(userId) {
     const { courses, enrollments } = db;
     const enrolledCourses = courses.filter((course) =>
@@ -13,11 +14,13 @@ export default function CoursesDao(db) {
     );
     return enrolledCourses;
   }
+
   function createCourse(course) {
     const newCourse = { ...course, _id: uuidv4() };
     db.courses = [...db.courses, newCourse];
     return newCourse;
   }
+
   function deleteCourse(courseId) {
     const { courses, enrollments } = db;
     db.courses = courses.filter((course) => course._id !== courseId);
@@ -25,12 +28,14 @@ export default function CoursesDao(db) {
       (enrollment) => enrollment.course !== courseId
     );
   }
+
   function updateCourse(courseId, courseUpdates) {
     const { courses } = db;
     const course = courses.find((course) => course._id === courseId);
     Object.assign(course, courseUpdates);
     return course;
-  }  
+  } 
+   
   return {
     findAllCourses,
     findCoursesForEnrolledUser,
