@@ -21,7 +21,7 @@ export default function UserRoutes(app, db) {
     if (user) {
       res.json(user);
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found, id: " + userId });
     }
   };
   const updateUser = (req, res) => {
@@ -60,8 +60,7 @@ export default function UserRoutes(app, db) {
     const currentUser = req.session["currentUser"];
     console.log("Current user found");
     if (!currentUser) {
-      res.sendStatus(401);
-      console.log("Current not found?");
+      res.sendStatus(401).json({message: "Current user not found, profile"});
       return;
     }
     res.json(currentUser);

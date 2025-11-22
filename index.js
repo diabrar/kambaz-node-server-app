@@ -14,20 +14,20 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:3000" || "http://kambaz-next-js-three-chi.vercel.app",
   })
 );
 const sessionOptions = {
-  secret: process.env.SESSION_SECRET || "kambaz",
+  secret: process.env.SESSION_SECRET || "matcha",
   resave: false,
   saveUninitialized: false,
 };
-if (process.env.SERVER_ENV !== "development") {
+if (process.env.SERVER_ENV === "production") {
   sessionOptions.proxy = true;
   sessionOptions.cookie = {
     sameSite: "none",
     secure: true,
-    domain: process.env.SERVER_URL,
+    //domain: process.env.SERVER_URL,
   };
 }
 app.use(session(sessionOptions));

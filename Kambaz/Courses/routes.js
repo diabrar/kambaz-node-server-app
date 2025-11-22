@@ -15,13 +15,14 @@ export default function CourseRoutes(app, db) {
     const courses = dao.findAllCourses();
     res.send(courses);
   }
+
   const findCoursesForEnrolledUser = (req, res) => {
     let { userId } = req.params;
     if (userId === "current") {
       const currentUser = req.session["currentUser"];
       if (!currentUser) {
         console.log("No current user");
-        res.sendStatus(401);
+        res.sendStatus(401).json({message : "current user not found, courses"});
         return;
       }
       userId = currentUser._id;
@@ -29,11 +30,13 @@ export default function CourseRoutes(app, db) {
     const courses = dao.findCoursesForEnrolledUser(userId);
     res.json(courses);
   };
+
   const deleteCourse = (req, res) => {
     const { courseId } = req.params;
     const status = dao.deleteCourse(courseId);
     res.send(status);
   }
+
   const updateCourse = (req, res) => {
     const { courseId } = req.params;
     const courseUpdates = req.body;
