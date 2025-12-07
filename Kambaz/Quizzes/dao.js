@@ -26,6 +26,29 @@ export default function QuizzesDao(db) {
     quiz.published = !quiz.published;
     return quiz.save();
   }
+  function addQuestion (quizId, question) {
+    return model.findOneAndUpdate(
+      { _id: quizId },
+      { $push: { questions: question } },
+      { new: true }
+    );
+  };
+
+  function updateQuestion (quizId, questionId, updates) {
+    return model.findOneAndUpdate(
+      { _id: quizId, "questions._id": questionId },
+      { $set: { "questions.$": updates } },
+      { new: true }
+    );
+  };
+
+  function deleteQuestion (quizId, questionId) {
+    return model.findOneAndUpdate(
+      { _id: quizId },
+      { $pull: { questions: { _id: questionId } } },
+      { new: true }
+    );
+  };
   return {
     findQuizById,
     publishQuiz,
@@ -34,5 +57,8 @@ export default function QuizzesDao(db) {
     createQuiz,
     deleteQuiz,
     updateQuiz,
+    addQuestion,
+    updateQuestion,
+    deleteQuestion,
   };
 }

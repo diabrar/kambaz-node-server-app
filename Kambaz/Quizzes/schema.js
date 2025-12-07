@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema({
+  _id: String,
   type: {
     type: String,
     enum: ["multiple-choice", "true-false", "fill-in-blank"],
@@ -9,9 +10,9 @@ const questionSchema = new mongoose.Schema({
   title: String,
   points: { type: Number, default: 1 },
   question: String,
-  choices: [{ text: String, isCorrect: Boolean }], 
-  correctAnswer: String, 
-  possibleAnswers: [String], 
+  choices: [{ text: String, isCorrect: Boolean }],
+  correctAnswer: String,
+  possibleAnswers: [String],
 });
 
 const quizzesSchema = new mongoose.Schema(
@@ -20,7 +21,7 @@ const quizzesSchema = new mongoose.Schema(
     title: String,
     course: { type: String, ref: "CourseModel" },
     quizType: { type: String, default: "Graded quiz" },
-    points: {type: Number, default: 100},
+    points: { type: Number, default: 100 },
     assignmentGroup: { type: String, default: "Quizzes" },
     shuffleAnswers: { type: Boolean, default: true },
     timeLimit: { type: Number, default: 20 },

@@ -55,6 +55,34 @@ export default function QuizzesRoutes(app, db) {
       res.status(500).json({ message: error.message });
     }
   };
+
+  const addQuestion = async (req, res) => {
+    const { quizId } = req.params;
+    const question = req.body;
+    const updatedQuiz = await dao.addQuestionToQuiz(quizId, question);
+    res.json(updatedQuiz);
+  };
+
+  const updateQuestion = async (req, res) => {
+    const { quizId, questionId } = req.params;
+    const updates = req.body;
+    const updatedQuiz = await dao.updateQuestionInQuiz(
+      quizId,
+      questionId,
+      updates
+    );
+    res.json(updatedQuiz);
+  };
+
+  const deleteQuestion = async (req, res) => {
+    const { quizId, questionId } = req.params;
+    const updatedQuiz = await dao.deleteQuestionFromQuiz(quizId, questionId);
+    res.json(updatedQuiz);
+  };
+
+  app.post("/api/quizzes/:quizId/questions", addQuestion);
+  app.put("/api/quizzes/:quizId/questions/:questionId", updateQuestion);
+  app.delete("/api/quizzes/:quizId/questions/:questionId", deleteQuestion);
   app.put("/api/quizzes/:quizId/publish", togglePublish);
   app.put("/api/quizzes/:quizId", updateQuiz);
   app.delete("/api/quizzes/:quizId", deleteQuiz);
