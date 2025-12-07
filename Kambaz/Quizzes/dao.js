@@ -18,8 +18,8 @@ export default function QuizzesDao(db) {
   function deleteQuiz(quizId) {
     return model.deleteOne({ _id: quizId });
   }
-  function updateQuiz(quizId, quizUpdates) {
-    return model.updateOne({ _id: quizId }, quizUpdates);
+  function updateQuiz(quizId, quiz) {
+    return model.updateOne({ _id: quizId }, { $set: quiz });
   }
   function publishQuiz(quizId) {
     const quiz = model.findById(quizId);

@@ -33,6 +33,9 @@ export default function QuizzesRoutes(app, db) {
   const updateQuiz = async (req, res) => {
     const { quizId } = req.params;
     const quizUpdates = req.body;
+    if (!quizId || typeof quizId !== "string") {
+        return res.status(400).json({ message: "Invalid quizId" });
+    }
     const status = await dao.updateQuiz(quizId, quizUpdates);
     res.send(status);
   }
@@ -52,7 +55,7 @@ export default function QuizzesRoutes(app, db) {
       res.status(500).json({ message: error.message });
     }
   };
-  app.put("/api/quizzes/:quizId", togglePublish);
+  app.put("/api/quizzes/:quizId/publish", togglePublish);
   app.put("/api/quizzes/:quizId", updateQuiz);
   app.delete("/api/quizzes/:quizId", deleteQuiz);
   app.get("/api/quizzes/:quizId", findQuizById);
