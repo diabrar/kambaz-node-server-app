@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+const questionSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ["multiple-choice", "true-false", "fill-in-blank"],
+    required: true,
+  },
+  title: String,
+  points: { type: Number, default: 1 },
+  question: String,
+  choices: [{ text: String, isCorrect: Boolean }], 
+  correctAnswer: String, 
+  possibleAnswers: [String], 
+});
+
 const quizzesSchema = new mongoose.Schema(
   {
     _id: String,
@@ -20,6 +34,8 @@ const quizzesSchema = new mongoose.Schema(
     availableFrom: String,
     availableUntil: String,
     totalQs: { type: Array, default: [] },
+    questions: [questionSchema],
+    published: { type: Boolean, default: false },
   },
   { collection: "quizzes" }
 );

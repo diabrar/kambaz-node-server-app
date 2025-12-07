@@ -6,6 +6,11 @@ export default function QuizzesRoutes(app, db) {
     const quizzes = await dao.findAllQuizzes();
     res.json(quizzes);
   }
+  const findQuizById = async (req, res) => {
+    const { quizId } = req.params;
+    const quiz = await dao.findQuizById(quizId);
+    res.json(quiz);
+  }
   const findQuizzesForCourse = async (req, res) => {
     const { courseId } = req.params;
     const quizzes = await dao.findQuizzesForCourse(courseId);
@@ -31,8 +36,26 @@ export default function QuizzesRoutes(app, db) {
     const status = await dao.updateQuiz(quizId, quizUpdates);
     res.send(status);
   }
+  const togglePublish = async (req, res) => {
+    try {
+      const { quizId } = req.params;
+      const currentUser = req.session.currentUser;
+      if (!currentUser || currentUser.role !== "FACULTY") {
+        return res.status(403).json({ message: "Only faculty can publish quizzes" });
+      }
+      const quiz = await dao.publishQuiz(quizId);
+      if (!quiz) {
+        return res.status(404).json({ message: "Quiz not found" });
+      }
+      res.json(quiz);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  app.put("/api/quizzes/:quizId", togglePublish);
   app.put("/api/quizzes/:quizId", updateQuiz);
   app.delete("/api/quizzes/:quizId", deleteQuiz);
+  app.get("/api/quizzes/:quizId", findQuizById);
   app.post("/api/courses/:courseId/quizzes", createQuizForCourse);
   app.get("/api/courses/:courseId/quizzes", findQuizzesForCourse);
   app.get("/api/quizzes", getQuizzes);
