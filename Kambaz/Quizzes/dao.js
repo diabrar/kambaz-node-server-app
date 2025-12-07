@@ -2,6 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import model from "./model.js"
 
 export default function QuizzesDao(db) {
+    function findAllQuizzes() {
+        return model.find();
+    }
     function findQuizzesForCourse(courseId) {
       return model.find({ course: courseId });
     }
@@ -16,6 +19,7 @@ export default function QuizzesDao(db) {
       return model.updateOne({ _id: quizId }, quizUpdates);
     }
     return {
+    findAllQuizzes,
     findQuizzesForCourse,
     createQuiz,
     deleteQuiz,

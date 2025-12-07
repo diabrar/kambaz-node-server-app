@@ -1,0 +1,12 @@
+export default [
+  {
+    _id: "01",
+    title: "test",
+    course: "RS101",
+    quizType: "Graded quiz",
+    points: 100,
+    assignmentGroup: "Quizzes",
+    shuffleAnswers: "Yes",
+    timeLimit: 20,
+  },
+];

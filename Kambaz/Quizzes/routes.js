@@ -1,7 +1,11 @@
-import QuizzesDao from "../Quizes/dao.js";
+import QuizzesDao from "../Quizzes/dao.js";
 
 export default function QuizzesRoutes(app, db) {
   const dao = QuizzesDao(db);
+  const getQuizzes = async (req, res) => {
+    const quizzes = await dao.findAllQuizzes();
+    res.json(quizzes);
+  }
   const findQuizzesForCourse = async (req, res) => {
     const { courseId } = req.params;
     const quizzes = await dao.findQuizzesForCourse(courseId);
@@ -31,4 +35,5 @@ export default function QuizzesRoutes(app, db) {
   app.delete("/api/quizzes/:quizId", deleteQuiz);
   app.post("/api/courses/:courseId/quizzes", createQuizForCourse);
   app.get("/api/courses/:courseId/quizzes", findQuizzesForCourse);
+  app.get("/api/quizzes", getQuizzes);
 }
