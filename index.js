@@ -19,7 +19,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL || "http://localhost:3000" || "https://kambaz-next-js-a6-umber.vercel.app",
+    origin: process.env.CLIENT_URL || "http://localhost:3000" || "https://kambaz-quizzes-two.vercel.app",
   })
 );
 const sessionOptions = {
